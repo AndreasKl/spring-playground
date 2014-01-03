@@ -1,4 +1,4 @@
-spring-mvc-playground
+spring-playground
 =====================
 
-Random spring mvc projects.
+Random spring projects.
