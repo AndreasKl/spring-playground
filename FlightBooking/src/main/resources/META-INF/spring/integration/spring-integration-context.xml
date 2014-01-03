@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:int="http://www.springframework.org/schema/integration"
+  xsi:schemaLocation="
+		http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/integration
+		http://www.springframework.org/schema/integration/spring-integration.xsd">
+
+  <int:poller default="true" fixed-rate="1000" />
+
+  <int:gateway service-interface="net.andreaskluth.flightbooking.BookingConfirmationService"
+    default-request-channel="bookingConfirmationRequests" default-reply-channel="completedBookings" />
+
+  <int:channel id="bookingConfirmationRequests" />
+
+  <int:service-activator input-channel="bookingConfirmationRequests" output-channel="chargedBookings"
+    ref="billForBookingService" />
+
+  <int:channel id="chargedBookings" />
+
+  <int:service-activator input-channel="chargedBookings" output-channel="completedBookings" ref="seatAvailabilityService" />
+
+  <int:publish-subscribe-channel id="completedBookings" />
+
+  <int:bridge input-channel="completedBookings" output-channel="emailConfirmationRequests" />
+
+  <int:channel id="emailConfirmationRequests">
+    <int:queue />
+  </int:channel>
+
+  <int:delayer id="emailDelayer" input-channel="emailConfirmationRequests" output-channel="delayedEmailConfirmationRequests"
+    default-delay="333" />
+
+  <int:channel id="delayedEmailConfirmationRequests" />
+
+  <int:outbound-channel-adapter channel="delayedEmailConfirmationRequests" ref="emailConfirmationService"
+    method="sendMail" />
+
+  <bean id="billForBookingService" class="net.andreaskluth.flightbooking.BillForBookingService" />
+  <bean id="seatAvailabilityService" class="net.andreaskluth.flightbooking.SeatAvailabilityService" />
+  <bean id="emailConfirmationService" class="net.andreaskluth.flightbooking.EmailConfirmationService" />
+
+</beans>
