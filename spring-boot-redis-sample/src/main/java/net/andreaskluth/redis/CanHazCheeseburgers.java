@@ -27,4 +27,9 @@ public class CanHazCheeseburgers implements Serializable {
   public String getCheez() {
     return cheez;
   }
+
+  @Override
+  public String toString() {
+    return "CanHazCheeseburgers [cat=" + cat + ", dog=" + dog + ", cheez=" + cheez + "]";
+  }
 }
