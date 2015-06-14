@@ -1,0 +1,1 @@
+Call http://localhost:8761/ to see the eureka registry.

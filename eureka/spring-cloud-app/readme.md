@@ -1,0 +1,1 @@
+Call http://localhost:8080/sample to see DiscoveryClient in action.

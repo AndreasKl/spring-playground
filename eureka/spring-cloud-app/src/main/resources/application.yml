@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: eureka-sample
+
+eureka:
+  instance:
+    metadataMap:
+      instanceId: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+    statusPageUrlPath: /info
+    healthCheckUrlPath: /health
