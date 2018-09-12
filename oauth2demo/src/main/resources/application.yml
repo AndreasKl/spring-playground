@@ -1,0 +1,25 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://127.0.0.1:5432/postgres
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+  jpa:
+    hibernate:
+      use-new-id-generator-mappings: true
+    generate-ddl: false
+    show-sql: true
+    open-in-view: false
+    database-platform: org.hibernate.dialect.PostgreSQL95Dialect
+  security:
+    oauth2:
+      client:
+        registration:
+          foo:
+            client-id: omg
+            client-secret: omg
+        provider:
+          foo:
+            authorization-uri: https://foo/oauth2/v1/authorize
+            token-uri: https://foo/oauth2/v1/token
+            user-info-uri: https://foo/oauth2/v1/userinfo
+            jwk-set-uri: https://foo/oauth2/v1/keys
